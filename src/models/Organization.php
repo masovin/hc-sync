@@ -11,6 +11,15 @@ class Organization extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'code',
+        'path',
+        'name',
+        'position_name',
+        'active',
+        'parent_code'
+    ];
+
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_code', 'code');

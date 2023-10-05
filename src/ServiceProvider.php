@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelSbagio;
+namespace HcSync;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use LaravelSbagio\Commands\LumenPublish;
+use HcSync\Commands\LumenPublish;
 use LaravelSbagio\Commands\Run;
 
 class ServiceProvider extends BaseServiceProvider
@@ -53,7 +53,6 @@ class ServiceProvider extends BaseServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Run::class,
-                LumenPublish::class
             ]);
         }
     }

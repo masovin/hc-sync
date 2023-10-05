@@ -9,6 +9,8 @@ class TeamWork extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['code', 'organization_code', 'name', 'active'];
+
     public function organization()
     {
         return $this->belongsTo(Organization::class, 'organization_code', 'code');
