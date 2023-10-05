@@ -34,7 +34,7 @@ class HumanCapital
     {
         try {
             // TODO change credential with config
-            $res = Http::post('http://localhost:8081/api/auth/login', ['email' => 'superuser@reksa.co.id', 'password' => 'password']);
+            $res = Http::post($this->config['host'] . '/api/auth/login', ['email' => $this->config['client_id'], 'password' => $this->config['client_secret']]);
             $jsonData = $res->json();
 
             if ($jsonData['status']) {
@@ -49,10 +49,15 @@ class HumanCapital
     }
     public function sync()
     {
+        if (HcSyncConfig::isLocked()) {
+            return $this->warning('Sinkronisasi terkunci, mungkin sedang ada proses sinkronisasi yang sedang berjalan.');
+        }
         try {
+            $lastHash = HcSyncConfig::orderBy('id', 'desc')->where('conf_key', 'last_hash')->first();
+
             $res = Http::withToken($this->getApiToken())
                 ->accept('application/json')
-                ->get('http://localhost:8081/api/event/fetch', ['last_hash' => '']);
+                ->get($this->config['host'] . '/api/event/fetch', ['last_hash' => $lastHash->conf_value ?? ""]);
             $response = $res->json();
             if ($res->successful()) {
                 foreach ($response['data'] as $key => $event) {
@@ -72,7 +77,7 @@ class HumanCapital
                     }
 
                     // membuka kuncu transaksi
-                    if ($key == count($response) - 1) {
+                    if ($key == count($response['data']) - 1) {
                         $this->info('Sinkronisasi Berhasil', 'HC-SYNC');
                         $consumer->setLock(false);
                     }
@@ -89,6 +94,9 @@ class HumanCapital
     public function loadConfig()
     {
         $this->config = config('hc-sync.api');
+        if (!$this->config) {
+            throw new Exception("Error Get HcSync Config");
+        }
     }
 
     /**
@@ -132,7 +140,7 @@ class HumanCapital
     public function unlock()
     {
         $this->info('Transaski Dibuka');
-        return HcSyncConfig::updateOrCreate([
+        return HcSyncConfig::updateOrCreate(['conf_key' => 'lock'], [
             'conf_key' => 'lock',
             'conf_value' => false
         ]);

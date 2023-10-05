@@ -29,7 +29,7 @@ class Consumer implements Organization
      */
     public function setLastHash($lastHash)
     {
-        return HcSyncConfig::updateOrCreate([
+        return HcSyncConfig::updateOrCreate(['conf_key' => 'last_hash'], [
             'conf_key' => 'last_hash',
             'conf_value' => $lastHash
         ]);
@@ -42,7 +42,7 @@ class Consumer implements Organization
     public function setLock($lock)
     {
         $this->info($lock ? 'Mengunci Transaksi' : 'Transaski Dibuka');
-        return HcSyncConfig::updateOrCreate([
+        return HcSyncConfig::updateOrCreate(['conf_key' => 'lock'], [
             'conf_key' => 'lock',
             'conf_value' => $lock
         ]);
@@ -50,6 +50,7 @@ class Consumer implements Organization
 
     public function insertEvent($event)
     {
+        $event = collect($event)->except('created_at', 'updated_at')->toArray();
         return HcSyncEvent::insert($event);
     }
 
@@ -64,7 +65,7 @@ class Consumer implements Organization
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $org = ModelOrganization::updateOrCreate($data);
+            $org = ModelOrganization::updateOrCreate(['code' => $data['code']], $data);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -90,7 +91,7 @@ class Consumer implements Organization
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $org = ModelOrganization::updateOrCreate($data);
+            $org = ModelOrganization::updateOrCreate(['code' => $data['code']], $data);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
