@@ -11,7 +11,7 @@ class TeamWorkMembership extends Model
     const TYPE_LEADER = 1;
     const TYPE_MEMBER = 2;
 
-    protected $fillable = ['team_work_code', 'nip', 'type', 'active', 'activated_at', 'deactivated_at'];
+    protected $fillable = ['code', 'team_work_code', 'nip', 'type', 'active', 'activated_at', 'deactivated_at'];
 
     public function employee()
     {
