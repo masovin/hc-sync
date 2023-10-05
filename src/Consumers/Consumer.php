@@ -189,7 +189,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             event('changeOrganization', $event);
 
             //
-            $emp = ModelEmployee::where('nip', $event['nip'])->update('organization_code', $event['organization_code']);
+            $emp = ModelEmployee::where('nip', $event['nip'])->update(['organization_code', $event['organization_code']]);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -278,7 +278,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             event('ModelEmployeeActivated', $event);
 
             //
-            $emp = ModelEmployee::where('nip', $event['nip'])->update('active', true);
+            $emp = ModelEmployee::where('nip', $event['nip'])->update(['active', true]);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -307,7 +307,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             event('ModelEmployeeDisabled', $event);
 
             //
-            $emp = ModelEmployee::where('nip', $event['nip'])->update('active', false);
+            $emp = ModelEmployee::where('nip', $event['nip'])->update(['active', false]);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -402,7 +402,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $tw = TeamWork::where('code', $data['code'])->update('active', true);
+            $tw = TeamWork::where('code', $data['code'])->update(['active', true]);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -432,7 +432,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $tw = TeamWork::where('code', $data['code'])->update('active', false);
+            $tw = TeamWork::where('code', $data['code'])->update(['active', false]);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
