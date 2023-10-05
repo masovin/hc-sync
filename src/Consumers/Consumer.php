@@ -11,7 +11,7 @@ use App\Models\TeamWorkMembership;
 use HcSync\LoggerTrait;
 use Illuminate\Support\Facades\DB;
 
-class Consumer implements Organization, Employee, Teamwork
+class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsumer
 {
     use LoggerTrait;
 

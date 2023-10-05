@@ -2,7 +2,7 @@
 
 namespace HcSync\Consumers;
 
-interface Teamwork
+interface TeamworkConsumer
 {
     /**
      * @param array $event

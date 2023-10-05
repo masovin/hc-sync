@@ -2,7 +2,7 @@
 
 namespace HcSync\Consumers;
 
-interface Organization
+interface OrganizationConsumer
 {
     /**
      * @param array $event

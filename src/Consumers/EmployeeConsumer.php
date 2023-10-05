@@ -2,7 +2,7 @@
 
 namespace HcSync\Consumers;
 
-interface Employee
+interface EmployeeConsumer
 {
     /**
      * @param array $event
