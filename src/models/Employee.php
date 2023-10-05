@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\EmployeeScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
 
 class Employee extends User
 {
@@ -16,9 +15,14 @@ class Employee extends User
 
     protected $fillable = ['name', 'email', 'email_verified_at', 'password', 'profile_photo_path', 'organization_code', 'nip', 'jabatan_struktural_organisasi', 'plh_jabatan_struktural_organisasi', 'active', 'username'];
 
+    /**
+     * The "booted" method of the model.
+     */
     protected static function booted(): void
     {
-        static::addGlobalScope(new EmployeeScope);
+        static::addGlobalScope('employee', function (Builder $builder) {
+            $builder->whereNotNull('nip');
+        });
     }
 
     public function organization()
