@@ -2,14 +2,16 @@
 
 namespace HcSync\Consumers;
 
-use App\Models\Employee;
+use App\Models\Employee as ModelEmployee;
 use App\Models\HcSyncConfig;
 use App\Models\HcSyncEvent;
 use App\Models\Organization as ModelOrganization;
+use App\Models\TeamWork;
+use App\Models\TeamWorkMembership;
 use HcSync\LoggerTrait;
 use Illuminate\Support\Facades\DB;
 
-class Consumer implements Organization, Employee
+class Consumer implements Organization, Employee, Teamwork
 {
     use LoggerTrait;
 
@@ -113,6 +115,7 @@ class Consumer implements Organization, Employee
     /**
      * EMPLOYEE CONSUMER
      */
+
     /**
      * @param array $event
      * @return bool
@@ -122,12 +125,12 @@ class Consumer implements Organization, Employee
         try {
             DB::beginTransaction();
 
-            // crate employeeCreated event
-            event('employeeCreated', $event);
+            // crate ModelEmployeeCreated event
+            event('ModelEmployeeCreated', $event);
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $emp = Employee::updateOrCreate(['nip' => $data['nip']], $data);
+            $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -152,12 +155,12 @@ class Consumer implements Organization, Employee
         try {
             DB::beginTransaction();
 
-            // crate employeeUpdated event
-            event('employeeUpdated', $event);
+            // crate ModelEmployeeUpdated event
+            event('ModelEmployeeUpdated', $event);
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $emp = Employee::updateOrCreate(['nip' => $data['nip']], $data);
+            $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -186,7 +189,7 @@ class Consumer implements Organization, Employee
             event('changeOrganization', $event);
 
             //
-            $emp = Employee::where('nip', $event['nip'])->update('organization_code', $event['organization_code']);
+            $emp = ModelEmployee::where('nip', $event['nip'])->update('organization_code', $event['organization_code']);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -216,7 +219,7 @@ class Consumer implements Organization, Employee
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $emp = Employee::updateOrCreate(['nip' => $data['nip']], $data);
+            $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -246,7 +249,7 @@ class Consumer implements Organization, Employee
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
-            $emp = Employee::updateOrCreate(['nip' => $data['nip']], $data);
+            $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -271,11 +274,11 @@ class Consumer implements Organization, Employee
         try {
             DB::beginTransaction();
 
-            // crate employeeActivated event
-            event('employeeActivated', $event);
+            // crate ModelEmployeeActivated event
+            event('ModelEmployeeActivated', $event);
 
             //
-            $emp = Employee::where('nip', $event['nip'])->update('active', true);
+            $emp = ModelEmployee::where('nip', $event['nip'])->update('active', true);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);
@@ -300,11 +303,256 @@ class Consumer implements Organization, Employee
         try {
             DB::beginTransaction();
 
-            // crate employeeDisabled event
-            event('employeeDisabled', $event);
+            // crate ModelEmployeeDisabled event
+            event('ModelEmployeeDisabled', $event);
 
             //
-            $emp = Employee::where('nip', $event['nip'])->update('active', false);
+            $emp = ModelEmployee::where('nip', $event['nip'])->update('active', false);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+
+    /**
+     * TEAMWORK CONSUMER
+     */
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teamworkCreated(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teamworkCreated event
+            event('teamworkCreated', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $tw = TeamWork::updateOrCreate(['code' => $data['code']], $data);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teamworkUpdated(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teamworkUpdated event
+            event('teamworkUpdated', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $tw = TeamWork::updateOrCreate(['code' => $data['code']], $data);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teamworkActivated(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teamworkActivated event
+            event('teamworkActivated', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $tw = TeamWork::where('code', $data['code'])->update('active', true);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teamworkDeactivated(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teamworkDeactivated event
+            event('teamworkDeactivated', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $tw = TeamWork::where('code', $data['code'])->update('active', false);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teamleaderActivated(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teamleaderActivated event
+            event('teamleaderActivated', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $twl = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teamleaderDeactivate(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teamleaderDeactivate event
+            event('teamleaderDeactivate', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $twl = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teammemberActivated(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teammemberActivated event
+            event('teammemberActivated', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $twm = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
+
+            $this->setLastHash($this->hash);
+            $this->insertEvent($this->hcEvent);
+
+            DB::commit();
+            $this->success($this->hash, $this->hcEvent['name']);
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->error($th->getMessage(), $this->hcEvent['name']);
+
+            return false;
+        }
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function teammemberDeactivate(array $event): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // crate teammemberDeactivate event
+            event('teammemberDeactivate', $event);
+
+            //
+            $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
+            $twm = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
 
             $this->setLastHash($this->hash);
             $this->insertEvent($this->hcEvent);

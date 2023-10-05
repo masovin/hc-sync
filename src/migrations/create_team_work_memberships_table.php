@@ -13,6 +13,7 @@ class CreateTeamWorkMembershipsTable extends Migration
     {
         Schema::create('team_work_memberships', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->string('team_work_code');
             $table->string('nip');
             $table->integer('type');
