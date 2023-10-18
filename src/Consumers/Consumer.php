@@ -323,6 +323,38 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         }
     }
 
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function employmentStatusCreated(array $event): bool
+    {
+        event('employmentStatusCreated', $event);
+
+        return true;
+    }
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function employmentStatusUpdated(array $event): bool
+    {
+        event('employmentStatusUpdated', $event);
+
+        return true;
+    }
+    /**
+     * @param array $event
+     * @return bool
+     */
+    public function employmentStatusDeleted(array $event): bool
+    {
+        event('employmentStatusDeleted', $event);
+
+        return true;
+    }
+
 
     /**
      * TEAMWORK CONSUMER

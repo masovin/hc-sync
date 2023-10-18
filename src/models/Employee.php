@@ -13,7 +13,20 @@ class Employee extends User
 
     protected $table = 'users';
 
-    protected $fillable = ['name', 'email', 'email_verified_at', 'password', 'profile_photo_path', 'organization_code', 'nip', 'jabatan_struktural_organisasi', 'plh_jabatan_struktural_organisasi', 'active', 'username'];
+    protected $fillable = [
+        'name',
+        'email',
+        'email_verified_at',
+        'password',
+        'profile_photo_path',
+        'organization_code',
+        'nip',
+        'jabatan_struktural_organisasi',
+        'plh_jabatan_struktural_organisasi',
+        'active',
+        'username',
+        'employment_status'
+    ];
 
     /**
      * The "booted" method of the model.

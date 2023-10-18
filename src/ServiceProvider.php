@@ -100,6 +100,11 @@ class ServiceProvider extends BaseServiceProvider
             $timestamp = date('Y_m_d_His', time());
             $copyMap[$dir . '/migrations/create_hc_sync_events_table.php'] = database_path('migrations/' . $timestamp . '_create_hc_sync_events_table.php');
         }
+        $hceMigrationFile = glob(database_path('migrations/*alter_employment_status_to_users_table*'));
+        if (count($hceMigrationFile) <= 0) {
+            $timestamp = date('Y_m_d_His', time());
+            $copyMap[$dir . '/migrations/alter_employment_status_to_users_table.php'] = database_path('migrations/' . $timestamp . 'alter_employment_status_to_users_table.php');
+        }
 
         if ($copyMap->isNotEmpty()) {
             $this->publishes($copyMap->toArray());

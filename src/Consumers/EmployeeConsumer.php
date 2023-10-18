@@ -45,4 +45,22 @@ interface EmployeeConsumer
      * @return bool
      */
     function employeeDisabled(array $event): bool;
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    function employmentStatusCreated(array $event): bool;
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    function employmentStatusUpdated(array $event): bool;
+
+    /**
+     * @param array $event
+     * @return bool
+     */
+    function employmentStatusDeleted(array $event): bool;
 }
