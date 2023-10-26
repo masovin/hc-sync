@@ -17,7 +17,8 @@ class Organization extends Model
         'name',
         'position_name',
         'active',
-        'parent_code'
+        'parent_code',
+        'is_pejabat_tinggi'
     ];
 
     public function parent()
