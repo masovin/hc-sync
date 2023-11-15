@@ -22,6 +22,7 @@ class Employee extends User
         'organization_code',
         'nip',
         'jabatan_struktural_organisasi',
+        'plt_jabatan_struktural_organisasi',
         'plh_jabatan_struktural_organisasi',
         'active',
         'username',
@@ -102,6 +103,8 @@ class Employee extends User
 
         if ($this->jabatan_struktural_organisasi) {
             $jabatan[] = $this->jabatan_struktural_organisasi->position_name;
+        } else {
+            $jabatan[] = "STAFF " . $this->organization->name;
         }
 
         if ($this->plt_jabatan_struktural_organisasi) {
