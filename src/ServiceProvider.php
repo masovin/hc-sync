@@ -110,6 +110,11 @@ class ServiceProvider extends BaseServiceProvider
             $timestamp = date('Y_m_d_His', time());
             $copyMap[$dir . '/migrations/alter_is_pejabat_tinggi_to_organizations_table.php'] = database_path('migrations/' . $timestamp . 'alter_is_pejabat_tinggi_to_organizations_table.php');
         }
+        $hceMigrationFile = glob(database_path('migrations/*alter_employee_to_team_works_memberhips_table*'));
+        if (count($hceMigrationFile) <= 0) {
+            $timestamp = date('Y_m_d_His', time());
+            $copyMap[$dir . '/migrations/alter_employee_to_team_works_memberhips_table.php'] = database_path('migrations/' . $timestamp . 'alter_employee_to_team_works_memberhips_table.php');
+        }
 
         if ($copyMap->isNotEmpty()) {
             $this->publishes($copyMap->toArray());

@@ -117,4 +117,41 @@ class Employee extends User
 
         return $jabatan;
     }
+
+    public function getPositionAttribute()
+    {
+        if ($this->jabatan_struktural_organisasi) {
+            $position = [
+                'organization_code' => $this->jabatan_struktural_organisasi->code,
+                'organization' => $this->jabatan_struktural_organisasi,
+                'name' => $this->jabatan_struktural_organisasi->position_name
+            ];
+        } elseif ($this->plt_jabatan_struktural_organisasi) {
+            $position = [
+                'organization_code' => $this->plt_jabatan_struktural_organisasi->code,
+                'organization' => $this->plt_jabatan_struktural_organisasi,
+                'name' => 'PLT ' . $this->plt_jabatan_struktural_organisasi->position_name
+            ];
+        } elseif ($this->plh_jabatan_struktural_organisasi) {
+            $position = [
+                'organization_code' => $this->plh_jabatan_struktural_organisasi->code,
+                'organization' => $this->plh_jabatan_struktural_organisasi,
+                'name' => 'PLH ' . $this->plh_jabatan_struktural_organisasi->position_name
+            ];
+        } else {
+            $position = [
+                'organization_code' => $this->organization_code,
+                'organization' => $this->organization,
+                'name' => 'STAFF ' . ($this->organization->name ?? '')
+            ];
+        }
+
+        return (object) $position;
+    }
+
+
+    public static function make(array $data)
+    {
+        return new self($data);
+    }
 }

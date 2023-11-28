@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,11 +12,14 @@ class TeamWorkMembership extends Model
     const TYPE_LEADER = 1;
     const TYPE_MEMBER = 2;
 
-    protected $fillable = ['code', 'team_work_code', 'nip', 'type', 'active', 'activated_at', 'deactivated_at'];
+    protected $fillable = ['code', 'team_work_code', 'nip', 'employee', 'type', 'active', 'activated_at', 'deactivated_at'];
 
-    public function employee()
+    protected function employee(): Attribute
     {
-        return $this->belongsTo(Employee::class, 'nip', 'nip');
+        return Attribute::make(
+            get: fn ($value) => Employee::make((array)json_decode($value)),
+            set: fn ($value) => json_encode($value),
+        );
     }
     public function scopeLeader($query)
     {
