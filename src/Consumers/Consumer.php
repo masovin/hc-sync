@@ -66,7 +66,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate organizationCreated event
-            event('organizationCreated', $event);
+            event('organizationCreated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -92,7 +92,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate organizationUpdated event
-            event('organizationUpdated', $event);
+            event('organizationUpdated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -125,8 +125,8 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate ModelEmployeeCreated event
-            event('ModelEmployeeCreated', $event);
+            // crate employeeCreated event
+            event('employeeCreated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -155,8 +155,8 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate ModelEmployeeUpdated event
-            event('ModelEmployeeUpdated', $event);
+            // crate employeeUpdated event
+            event('employeeUpdated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -186,7 +186,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate changeOrganization event
-            event('changeOrganization', $event);
+            event('changeOrganization', json_encode($event));
 
             //
             $emp = ModelEmployee::where('nip', $event['nip'])->update(['organization_code' => $event['organization_code']]);
@@ -215,7 +215,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate changePosition event
-            event('changePosition', $event);
+            event('changePosition', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -245,7 +245,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate updatePosition event
-            event('updatePosition', $event);
+            event('updatePosition', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -274,8 +274,8 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate ModelEmployeeActivated event
-            event('ModelEmployeeActivated', $event);
+            // crate employeeActivated event
+            event('employeeActivated', json_encode($event));
 
             //
             $emp = ModelEmployee::where('nip', $event['nip'])->update(['active' => true]);
@@ -303,8 +303,8 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate ModelEmployeeDisabled event
-            event('ModelEmployeeDisabled', $event);
+            // crate employeeDisabled event
+            event('employeeDisabled', json_encode($event));
 
             //
             $emp = ModelEmployee::where('nip', $event['nip'])->update(['active' => false]);
@@ -329,7 +329,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
      */
     public function employmentStatusCreated(array $event): bool
     {
-        event('employmentStatusCreated', $event);
+        event('employmentStatusCreated', json_encode($event));
 
         return true;
     }
@@ -340,7 +340,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
      */
     public function employmentStatusUpdated(array $event): bool
     {
-        event('employmentStatusUpdated', $event);
+        event('employmentStatusUpdated', json_encode($event));
 
         return true;
     }
@@ -350,7 +350,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
      */
     public function employmentStatusDeleted(array $event): bool
     {
-        event('employmentStatusDeleted', $event);
+        event('employmentStatusDeleted', json_encode($event));
 
         return true;
     }
@@ -370,7 +370,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teamworkCreated event
-            event('teamworkCreated', $event);
+            event('teamworkCreated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -400,7 +400,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teamworkUpdated event
-            event('teamworkUpdated', $event);
+            event('teamworkUpdated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -430,7 +430,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teamworkActivated event
-            event('teamworkActivated', $event);
+            event('teamworkActivated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -460,7 +460,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teamworkDeactivated event
-            event('teamworkDeactivated', $event);
+            event('teamworkDeactivated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -490,7 +490,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teamleaderActivated event
-            event('teamleaderActivated', $event);
+            event('teamleaderActivated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -520,7 +520,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teamleaderDeactivate event
-            event('teamleaderDeactivate', $event);
+            event('teamleaderDeactivate', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -550,7 +550,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teammemberActivated event
-            event('teammemberActivated', $event);
+            event('teammemberActivated', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
@@ -580,7 +580,7 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             DB::beginTransaction();
 
             // crate teammemberDeactivate event
-            event('teammemberDeactivate', $event);
+            event('teammemberDeactivate', json_encode($event));
 
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
