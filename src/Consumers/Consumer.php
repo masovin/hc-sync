@@ -65,10 +65,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate organizationCreated event
-            event('organizationCreated', json_encode($event));
-
-            //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $org = ModelOrganization::updateOrCreate(['code' => $data['code']], $data);
 
@@ -76,6 +72,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate organizationCreated event
+            event('organizationCreated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -91,9 +91,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate organizationUpdated event
-            event('organizationUpdated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $org = ModelOrganization::updateOrCreate(['code' => $data['code']], $data);
@@ -102,6 +99,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate organizationUpdated event
+            event('organizationUpdated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -125,9 +126,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate employeeCreated event
-            event('employeeCreated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
@@ -136,6 +134,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate employeeCreated event
+            event('employeeCreated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -155,9 +157,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate employeeUpdated event
-            event('employeeUpdated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
@@ -166,6 +165,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate employeeUpdated event
+            event('employeeUpdated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -185,9 +188,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate changeOrganization event
-            event('changeOrganization', json_encode($event));
-
             //
             $emp = ModelEmployee::where('nip', $event['nip'])->update(['organization_code' => $event['organization_code']]);
 
@@ -195,6 +195,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate changeOrganization event
+            event('changeOrganization', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -214,9 +218,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate changePosition event
-            event('changePosition', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
@@ -225,6 +226,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate changePosition event
+            event('changePosition', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -244,9 +249,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate updatePosition event
-            event('updatePosition', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $emp = ModelEmployee::updateOrCreate(['nip' => $data['nip']], $data);
@@ -255,6 +257,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate updatePosition event
+            event('updatePosition', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -274,9 +280,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate employeeActivated event
-            event('employeeActivated', json_encode($event));
-
             //
             $emp = ModelEmployee::where('nip', $event['nip'])->update(['active' => true]);
 
@@ -284,6 +287,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate employeeActivated event
+            event('employeeActivated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -303,9 +310,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate employeeDisabled event
-            event('employeeDisabled', json_encode($event));
-
             //
             $emp = ModelEmployee::where('nip', $event['nip'])->update(['active' => false]);
 
@@ -313,6 +317,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate employeeDisabled event
+            event('employeeDisabled', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -369,9 +377,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teamworkCreated event
-            event('teamworkCreated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $tw = TeamWork::updateOrCreate(['code' => $data['code']], $data);
@@ -380,6 +385,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teamworkCreated event
+            event('teamworkCreated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -399,9 +408,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teamworkUpdated event
-            event('teamworkUpdated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $tw = TeamWork::updateOrCreate(['code' => $data['code']], $data);
@@ -410,6 +416,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teamworkUpdated event
+            event('teamworkUpdated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -429,9 +439,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teamworkActivated event
-            event('teamworkActivated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $tw = TeamWork::where('code', $data['code'])->update(['active' => true]);
@@ -440,6 +447,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teamworkActivated event
+            event('teamworkActivated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -459,9 +470,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teamworkDeactivated event
-            event('teamworkDeactivated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $tw = TeamWork::where('code', $data['code'])->update(['active' => false]);
@@ -470,6 +478,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teamworkDeactivated event
+            event('teamworkDeactivated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -489,9 +501,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teamleaderActivated event
-            event('teamleaderActivated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $twl = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
@@ -500,6 +509,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teamleaderActivated event
+            event('teamleaderActivated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -519,9 +532,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teamleaderDeactivate event
-            event('teamleaderDeactivate', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $twl = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
@@ -530,6 +540,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teamleaderDeactivate event
+            event('teamleaderDeactivate', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -549,9 +563,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teammemberActivated event
-            event('teammemberActivated', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $twm = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
@@ -560,6 +571,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teammemberActivated event
+            event('teammemberActivated', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
@@ -579,9 +594,6 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
         try {
             DB::beginTransaction();
 
-            // crate teammemberDeactivate event
-            event('teammemberDeactivate', json_encode($event));
-
             //
             $data = collect($event)->except('id', 'created_at', 'updated_at')->toArray();
             $twm = TeamWorkMembership::updateOrCreate(['code' => $data['code']], $data);
@@ -590,6 +602,10 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
             $this->insertEvent($this->hcEvent);
 
             DB::commit();
+
+            // crate teammemberDeactivate event
+            event('teammemberDeactivate', json_encode($event));
+
             $this->success($this->hash, $this->hcEvent['name']);
             return true;
         } catch (\Throwable $th) {
