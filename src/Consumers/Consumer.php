@@ -52,7 +52,11 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
     public function insertEvent($event)
     {
         $event = collect($event)->except('created_at', 'updated_at')->toArray();
-        return HcSyncEvent::insert($event);
+        if (HcSyncEvent::find($event['id'])) {
+            return HcSyncEvent::insert($event);
+        } else {
+            return true;
+        }
     }
 
     // implement abstract
