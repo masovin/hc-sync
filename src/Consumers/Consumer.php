@@ -53,9 +53,9 @@ class Consumer implements OrganizationConsumer, EmployeeConsumer, TeamworkConsum
     {
         $event = collect($event)->except('created_at', 'updated_at')->toArray();
         if (HcSyncEvent::find($event['id'])) {
-            return HcSyncEvent::insert($event);
-        } else {
             return true;
+        } else {
+            return HcSyncEvent::insert($event);
         }
     }
 
